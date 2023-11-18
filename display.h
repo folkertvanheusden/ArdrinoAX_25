@@ -21,6 +21,7 @@ public:
 	void print(const char c);
 	void println(const std::string & str);
 	void println(const String & str);
+	void println(const char *const str);
 
 	unsigned long screen_on_time() const;
 

@@ -37,16 +37,21 @@ display::~display()
 
 void display::print(const char c)
 {
-	contents.at(y).at(x++) = c;
+	if (c == 13)
+		x = 0;
+	else if (c == 10)
+		y++;
+	else
+		contents.at(y).at(x++) = c;
 
 	if (x >= cols) {
 		y++;
 		x = 0;
+	}
 
-		if (y >= rows) {
-			contents.erase(contents.begin() + 0);
-			contents.push_back(std::string(cols, ' '));
-		}
+	if (y >= rows) {
+		contents.erase(contents.begin() + 0);
+		contents.push_back(std::string(cols, ' '));
 	}
 }
 
@@ -60,6 +65,14 @@ void display::println(const String & str)
 {
 	for(unsigned i=0; i<str.length(); i++)
 		print(str.charAt(i));
+}
+
+void display::println(const char *const str)
+{
+	size_t len = strlen(str);
+
+	for(unsigned i=0; i<len; i++)
+		print(str[i]);
 }
 
 unsigned long display::screen_on_time() const
