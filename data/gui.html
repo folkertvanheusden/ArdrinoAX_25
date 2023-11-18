@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M.A.X.X ESP WiFi manager</title>
+  <link href="style.css" rel="stylesheet">
+  <link href="/stricto.css" rel="stylesheet">
+  <script src="script.js" type="module"></script>
+ </head>
+ <body>
+  <noscript>Sorry, you need a JavaScript-enabled browser.</noscript>
+  <header><h1>M.A.X.X ESP WiFi manager</h1></header>
+  <main>
+
+   <div class="message"></div>
+
+   <button type="button" data-value="scan">(re-)scan WiFi for (new) accesspoints</button>
+
+   <button type="button" data-value="start">use new configuration</button>
+
+   <h2>Saved networks</h2>
+
+   <table class="saved"></table>
+  
+   <h2>Available networks</h2>
+
+   <table class="available"></table>
+
+   <h2>Device status</h2>
+   <details class="status">
+    <summary>Information</summary>
+    <dl></dl>
+   </details>
+
+  </main>
+
+  <footer>M.A.X.X ESP866 WiFi manager</footer>
+  <script src="oldies.js" nomodule></script>
+ </body>
+</html>
