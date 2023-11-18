@@ -304,7 +304,7 @@ bool configure_wifi::configure_aps()
 	server.begin();
 
 	while(rc == false)
-		delay(100);
+		vTaskDelay(100 / portTICK_PERIOD_MS);
 
 #if defined(ESP32)
 	WiFi.setSleep(prev_sleep_mode);
