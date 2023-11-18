@@ -64,7 +64,7 @@ bool start_wifi() {
 	BaseType_t   xReturned = xTaskCreate(
                     wifi_task,       /* Function that implements the task. */
                     "wifi",          /* Text name for the task. */
-                    2048,            /* Stack size in words, not bytes. */
+                    8192,            /* Stack size in words, not bytes. */
                     nullptr,         /* Parameter passed into the task. */
                     tskIDLE_PRIORITY,/* Priority at which the task is created. */
                     &xHandle);       /* Used to pass out the created task's handle. */

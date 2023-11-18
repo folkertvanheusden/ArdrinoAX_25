@@ -71,7 +71,7 @@ void display::println(const char *const str)
 {
 	size_t len = strlen(str);
 
-	for(unsigned i=0; i<len; i++)
+	for(size_t i=0; i<len; i++)
 		print(str[i]);
 }
 
