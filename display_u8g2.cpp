@@ -27,6 +27,7 @@ void display_u8g2::refresh_physical()
 			physical_device->drawStr(0, 12 + 13 * i, contents.at(i).c_str());
 	} while (physical_device->nextPage());
 
+	on_since = millis();
 	physical_device->setPowerSave(0);
 
 	physical_device->sendBuffer();
