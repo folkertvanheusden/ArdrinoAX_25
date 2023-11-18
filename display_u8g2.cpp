@@ -1,4 +1,5 @@
 #include <U8g2lib.h>
+#include <Wire.h>
 
 #include "display_u8g2.h"
 
@@ -36,4 +37,16 @@ void display_u8g2::refresh_physical()
 void display_u8g2::set_powersave()
 {
 	physical_device->setPowerSave(1);
+}
+
+display *create_lilygo_display()
+{
+	constexpr int I2C_SDA = 21;
+	constexpr int I2C_SCL = 22;
+	Wire.begin(I2C_SDA, I2C_SCL);
+
+	U8G2 *u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(U8G2_R0, U8X8_PIN_NONE);
+	u8g2->begin();
+
+	return new display_u8g2(u8g2);
 }

@@ -13,3 +13,5 @@ public:
 	void refresh_physical() override;
 	void set_powersave() override;
 };
+
+display *create_lilygo_display();
