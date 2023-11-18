@@ -1,13 +1,18 @@
 #include <configure_wifi.h>
 #include <LittleFS.h>
+#include <optional>
 #include <start_wifi.h>
 
+
+static volatile bool on_line { false };
 
 static bool progress_indicator(const int nr, const int mx, const std::string & which) {
 	return true;
 }
 
-static void wifi_task(void *) {
+static void wifi_task(void *s) {
+	volatile bool *on_line_state = reinterpret_cast<volatile bool *>(s);
+
 	set_hostname("ArdrinoAX.25");
 
 //	enable_wifi_debug();
@@ -51,23 +56,30 @@ static void wifi_task(void *) {
 
 		WiFi.setSleep(false);
 
-		while(check_wifi_connection_status() == CS_CONNECTED)
+		while(check_wifi_connection_status() == CS_CONNECTED) {
+			*on_line_state = true;
 			vTaskDelay(100 / portTICK_PERIOD_MS);
+		}
+
+		*on_line_state = false;
 	}
 }
 
-bool start_wifi() {
+std::optional<volatile bool *> start_wifi() {
 	if (!LittleFS.begin())
-		return false;
+		return { };
 
 	TaskHandle_t xHandle   = nullptr;
 	BaseType_t   xReturned = xTaskCreate(
                     wifi_task,       /* Function that implements the task. */
                     "wifi",          /* Text name for the task. */
                     8192,            /* Stack size in words, not bytes. */
-                    nullptr,         /* Parameter passed into the task. */
+                    (void *)&on_line, /* Parameter passed into the task. */
                     tskIDLE_PRIORITY,/* Priority at which the task is created. */
                     &xHandle);       /* Used to pass out the created task's handle. */
 
-	return xReturned == pdPASS;
+	if (xReturned == pdPASS)
+		return { &on_line };
+
+	return { };
 }

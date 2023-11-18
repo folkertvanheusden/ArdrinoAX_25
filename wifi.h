@@ -1,1 +1,1 @@
-bool start_wifi();
+std::optional<volatile bool *> start_wifi();
