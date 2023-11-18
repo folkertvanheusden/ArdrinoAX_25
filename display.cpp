@@ -52,6 +52,7 @@ void display::print(const char c)
 	if (y >= rows) {
 		contents.erase(contents.begin() + 0);
 		contents.push_back(std::string(cols, ' '));
+		y = rows - 1;
 	}
 }
 
