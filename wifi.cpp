@@ -10,7 +10,7 @@ static bool progress_indicator(const int nr, const int mx, const std::string & w
 static void wifi_task(void *) {
 	set_hostname("ArdrinoAX.25");
 
-	enable_wifi_debug();
+//	enable_wifi_debug();
 
 	for(;;) {
 		scan_access_points_start();
