@@ -9,7 +9,7 @@
 
 typedef struct {
 	int target_id;
-	std::vector<uint8_t> data;
+	std::vector<uint8_t> *data;
 } target_msg_t;
 
 class target

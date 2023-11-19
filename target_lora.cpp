@@ -16,13 +16,13 @@ std::optional<target_msg_t> target_lora::wait_for_receive_packet()
 {
 	auto data = get_lora();
 
-	if (data.has_value())
-		return { { id, std::move(data.value()) } };
+	if (data)
+		return { { id, data } };
 
 	return { };
 }
 
 void target_lora::send_message(const target_msg_t & msg)
 {
-	put_lora(msg.data);
+	put_lora(*msg.data);
 }

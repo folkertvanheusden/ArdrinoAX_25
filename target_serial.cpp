@@ -19,12 +19,12 @@ std::optional<target_msg_t> target_serial::wait_for_receive_packet()
 	if (unwrapped.has_value() == false)
 		return { };
 
-	return { { id, unwrapped.value() } };
+	return { { id, new std::vector<uint8_t>(unwrapped.value()) } };
 }
 
 void target_serial::send_message(const target_msg_t & msg)
 {
-	auto wrapped = wrap_kiss(msg.data);
+	auto wrapped = wrap_kiss(*msg.data);
 
 	Serial.write(wrapped.data(), wrapped.size());
 }

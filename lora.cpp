@@ -22,17 +22,17 @@ void put_lora(const std::vector<uint8_t> & data) {
 	LoRa_rx_mode();
 }
 
-std::optional<std::vector<uint8_t> > get_lora() {
-	std::vector<uint8_t> out;
-	size_t               n = LoRa.parsePacket();
-
+std::vector<uint8_t> * get_lora() {
+	size_t n = LoRa.parsePacket();
 	if (n == 0)
-		return { };
+		return nullptr;
+
+	std::vector<uint8_t> *out = new std::vector<uint8_t>();
 
 	for(size_t i=0; i<n; i++)
-		out.push_back(LoRa.read());
+		out->push_back(LoRa.read());
 
-	return { std::move(out) };
+	return out;
 }
 
 // specifically for APRS
