@@ -25,6 +25,5 @@ std::optional<target_msg_t> target_serial::wait_for_receive_packet()
 void target_serial::send_message(const target_msg_t & msg)
 {
 	auto wrapped = wrap_kiss(*msg.data);
-
 	Serial.write(wrapped.data(), wrapped.size());
 }

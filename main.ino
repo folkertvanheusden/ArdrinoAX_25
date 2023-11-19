@@ -35,7 +35,7 @@ void setup() {
 		d->println(F("WiFi failed"));
 
 	targets.push_back(new target_serial(q, d, target_id++));
-	targets.push_back(new target_lora(q, d, target_id++, 18, 23, 26));
+	targets.push_back(new target_lora(q, d, 18, 23, 26, target_id++));
 }
 
 void loop() {
