@@ -8,6 +8,6 @@ protected:
 	void send_message(const target_msg_t & msg) override;
 
 public:
-	target_serial(QueueHandle_t out, Print *const p);
+	target_serial(QueueHandle_t out, Print *const p, const int id);
 	virtual ~target_serial();
 };

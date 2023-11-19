@@ -9,7 +9,7 @@ void target_task(void *par)
 		t->receive_task();
 }
 
-target::target(QueueHandle_t out, Print *const p) : out(out), p(p)
+target::target(QueueHandle_t out, Print *const p, const int id) : out(out), p(p), id(id)
 {
 	BaseType_t xReturned = xTaskCreate(
                     target_task,     /* Function that implements the task. */
@@ -21,12 +21,6 @@ target::target(QueueHandle_t out, Print *const p) : out(out), p(p)
 
 	if (xReturned != pdPASS)
 		p->println(F("Failed to create \"target\" task"));
-	else {
-		TaskStatus_t xTaskDetails;
-		vTaskGetInfo(task, &xTaskDetails, pdFALSE, eInvalid);
-
-		id = xTaskDetails.xTaskNumber;
-	}
 }
 
 target::~target()

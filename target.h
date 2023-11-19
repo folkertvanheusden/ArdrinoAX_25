@@ -1,3 +1,4 @@
+#pragma once
 #include <optional>
 #include <Print.h>
 #include <stdint.h>
@@ -24,7 +25,7 @@ protected:
 	virtual void send_message(const target_msg_t & msg) = 0;
 
 public:
-	target(QueueHandle_t out, Print *const p);
+	target(QueueHandle_t out, Print *const p, const int id);
 	virtual ~target();
 
 	void queue_message(const target_msg_t & what);
