@@ -92,6 +92,9 @@ std::vector<uint8_t> wait_for_kiss(HardwareSerial & s)
 
 		if (c == FEND)
 			break;
+
+		if (out.size() > 1024)
+			out.clear();
 	}
 
 	return out;

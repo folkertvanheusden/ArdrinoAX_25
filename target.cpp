@@ -42,7 +42,7 @@ void target::receive_task()
 		auto msg = wait_for_receive_packet();
 
 		// send to scheduler
-		if (msg)
+		if (msg.has_value())
 			xQueueSend(out, &msg.value(), portMAX_DELAY);
 		else if (is_poll)
 			vTaskDelay(100 / portTICK_PERIOD_MS);
