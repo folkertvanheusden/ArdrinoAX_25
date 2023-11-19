@@ -4,6 +4,7 @@
 #include "display_u8g2.h"
 #include "target_lora.h"
 #include "target_serial.h"
+#include "target_udp.h"
 #include "wifi.h"
 
 
@@ -35,7 +36,8 @@ void setup() {
 		d->println(F("WiFi failed"));
 
 	targets.push_back(new target_serial(q, d, target_id++));
-	targets.push_back(new target_lora(q, d, 18, 23, 26, target_id++));
+	targets.push_back(new target_lora(q, d, target_id++, 18, 23, 26));
+	targets.push_back(new target_udp(q, d, target_id++, 5001, "192.168.64.206"));
 }
 
 void loop() {
