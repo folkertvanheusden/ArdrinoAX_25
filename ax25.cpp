@@ -301,7 +301,7 @@ std::pair<uint8_t *, size_t> ax25_packet::generate_packet() const
 {
 	int      data_size = data.size();
 
-	uint8_t *out       = reinterpret_cast<uint8_t *>(calloc(1, data_size + 1024 /* more than enough for an ax.25 header */));
+	uint8_t *out       = reinterpret_cast<uint8_t *>(calloc(1, data_size + 128 /* more than enough for an ax.25 header */));
 
 	auto addr_to       = to.generate_address();
 	memcpy(&out[0], addr_to.data(), 7);
