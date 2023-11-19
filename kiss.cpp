@@ -1,5 +1,6 @@
 #include "kiss.h"
 
+
 constexpr uint8_t FEND  = 0xc0;
 constexpr uint8_t FESC  = 0xdb;
 constexpr uint8_t TFEND = 0xdc;
@@ -73,4 +74,25 @@ std::optional<std::vector<uint8_t> > unwrap_kiss(const std::vector<uint8_t> & in
 	out.erase(out.begin() + 0);
 
 	return { std::move(out) };
+}
+
+std::vector<uint8_t> wait_for_kiss(HardwareSerial & s)
+{
+	std::vector<uint8_t> out;
+
+	for(;;) {
+		if (s.available() == 0) {
+			vTaskDelay(10 / portTICK_PERIOD_MS);
+			continue;
+		}
+
+		int c = s.read();
+
+		out.push_back(uint8_t(c));
+
+		if (c == FEND)
+			break;
+	}
+
+	return out;
 }
