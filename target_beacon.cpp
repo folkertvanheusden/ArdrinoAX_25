@@ -24,8 +24,8 @@ std::optional<target_msg_t> target_beacon::wait_for_receive_packet()
 		last_transmit = now;
 
 		ax25_packet a;
-		a.set_from   (callsign, callsign_ssid, false, false);
-		a.set_to     ("IDENT", 0, true, false);
+		a.set_from   (callsign, callsign_ssid, true, false);
+		a.set_to     ("IDENT", 0, false, false);
 		a.set_control(0x03);  // unnumbered information/frame
 		a.set_data   (reinterpret_cast<const uint8_t *>(beacon_text.c_str()), beacon_text.size());
 		a.set_pid    (0xf0);  // beacon

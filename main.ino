@@ -2,6 +2,7 @@
 
 #include "ax25.h"
 #include "display_u8g2.h"
+#include "kiss.h"
 #include "target_beacon.h"
 #include "target_lora.h"
 #include "target_serial.h"
@@ -45,9 +46,26 @@ void setup() {
 void loop() {
 	target_msg_t msg;
 	if (xQueueReceive(q, &msg, portMAX_DELAY) == pdTRUE) {
-		ax25_packet a25(*msg.data);
-		bool is_valid = a25.get_valid();
-		d->printf("%s -> %s (%d)", a25.get_from().to_str().c_str(), a25.get_to().to_str().c_str(), is_valid);
+		ax25_packet *a25 = nullptr;
+
+		auto unwrapped = unwrap_kiss(*msg.data);
+		if (unwrapped.has_value())
+			a25 = new ax25_packet(unwrapped.value());
+		else
+			a25 = new ax25_packet(*msg.data);
+
+		bool is_valid = a25->get_valid();
+		d->printf("%s -> %s (%d for %d - %s)", a25->get_from().to_str().c_str(), a25->get_to().to_str().c_str(), is_valid, unwrapped.has_value(), a25->get_invalid_reason().c_str());
+		delete a25;
+
+		if (is_valid == false) {
+			std::string dummy;
+
+			for(auto & v: *msg.data)
+				dummy += myformat("%02x ", v);
+
+			Serial.println(dummy.c_str());
+		}
 
 		if (is_valid) {
 			for(auto & t: targets)

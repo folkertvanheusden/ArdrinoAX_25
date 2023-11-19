@@ -25,8 +25,7 @@ std::vector<uint8_t> wrap_kiss(const std::vector<uint8_t> & in)
 {
 	std::vector<uint8_t> out;
 
-	out.push_back(FEND);
-	out.push_back(0x00);
+	put_byte(&out, 0x00);
 
 	for(auto & byte: in)
 		put_byte(&out, byte);
@@ -54,10 +53,8 @@ std::optional<std::vector<uint8_t> > unwrap_kiss(const std::vector<uint8_t> & in
 
 			escape = false;
 		}
-		else if (buffer == FEND) {
-			if (out.empty() == false)
-				return { std::move(out) };
-		}
+		else if (buffer == FEND)
+			break;
 		else if (buffer == FESC)
 			escape = true;
 		else {
