@@ -5,7 +5,8 @@
 target_lora::target_lora(QueueHandle_t out, Print *const p, const int pin_nss, const int pin_reset, const int pin_dio0, const int id) :
 	target(out, p, id)
 {
-	init_lora(pin_nss, pin_reset, pin_dio0);
+	if (init_lora(pin_nss, pin_reset, pin_dio0) == false)
+		p->println(F("LoRa radio init failed"));
 }
 
 target_lora::~target_lora()
