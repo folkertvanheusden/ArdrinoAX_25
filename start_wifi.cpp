@@ -1,4 +1,5 @@
 #include <map>
+#include <Print.h>
 #include <string>
 #include <vector>
 #include <utility>
@@ -6,7 +7,7 @@
 #include "start_wifi.h"
 
 
-bool debug = false;
+static Print *p = nullptr;
 
 bool set_hostname(const std::string & hostname)
 {
@@ -29,9 +30,9 @@ void start_wifi(const std::optional<std::string> & listen_ssid)
 	}
 }
 
-void enable_wifi_debug()
+void enable_wifi_debug(Print *const p_in)
 {
-	debug = true;
+	p = p_in;
 }
 
 void scan_access_points_start()
@@ -74,9 +75,6 @@ bool connect_to_access_point(const std::string ssid, const std::string password)
 connect_status_t check_wifi_connection_status()
 {
 	auto status = WiFi.status();
-
-	if (debug)
-		printf("wifi status: %d\r\n", status);
 
 	if (status == WL_CONNECTED)
 		return CS_CONNECTED;
@@ -137,8 +135,8 @@ connect_status_t try_connect_tick(connect_state_t & cs)
 
 	if (cs.nr < cs.use.size()) {
 		if (cs.connecting_state == false) {
-			if (debug)
-				printf("Connecting to %s\r\n", std::get<0>(cs.use.at(cs.nr)).c_str());
+			if (p)
+				p->printf("Connecting to %s\r\n", std::get<0>(cs.use.at(cs.nr)).c_str());
 
 			if (connect_to_access_point(std::get<0>(cs.use.at(cs.nr)), std::get<1>(cs.use.at(cs.nr)))) {
 				cs.connecting_state = true;
@@ -153,8 +151,8 @@ connect_status_t try_connect_tick(connect_state_t & cs)
 			auto status = check_wifi_connection_status();
 
 			if (status == CS_CONNECTED) {
-				if (debug)
-					printf("Connected\r\n");
+				if (p)
+					p->printf("Connected\r\n");
 
 				if (cs.progress_indicator.has_value())
 					cs.progress_indicator.value()(100, 100, std::get<0>(cs.use.at(cs.nr)));
@@ -163,8 +161,8 @@ connect_status_t try_connect_tick(connect_state_t & cs)
 			}
 
 			if (cs.waiting_nr >= cs.timeout) {
-				if (debug)
-					printf("timeout\r\n");
+				if (p)
+					p->printf("timeout\r\n");
 
 				cs.nr++;
 
@@ -174,8 +172,8 @@ connect_status_t try_connect_tick(connect_state_t & cs)
 			}
 
 			if (status == CS_FAILURE) {
-				if (debug)
-					printf("Connection failed\r\n");
+				if (p)
+					p->printf("Connection failed\r\n");
 
 				cs.nr++;
 

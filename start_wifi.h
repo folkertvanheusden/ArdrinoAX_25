@@ -26,7 +26,7 @@ connect_status_t           check_wifi_connection_status();
 std::optional<std::string> select_best_access_point    (const std::map<std::string, int> & list);
 
 //// main functions
-void                       enable_wifi_debug           ();
+void                       enable_wifi_debug           (Print *const p);
 
 void                       start_wifi                  (const std::optional<std::string> & listen_ssid);
 

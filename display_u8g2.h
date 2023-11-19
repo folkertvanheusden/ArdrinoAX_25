@@ -12,7 +12,7 @@ public:
 	virtual ~display_u8g2();
 
 	void refresh_physical() override;
-	void set_powersave() override;
+	void set_power_state(const bool on) override;
 };
 
 display *create_lilygo_display();
