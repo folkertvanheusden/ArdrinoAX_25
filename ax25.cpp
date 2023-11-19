@@ -94,7 +94,7 @@ ax25_address::ax25_address(const std::string & a, const bool end_mark, const boo
 
 	if (dash != std::string::npos) {
 		this->address = a.substr(0, dash);
-		this->ssid    = a[dash + 1];
+		this->ssid    = a[dash + 1] - '0';
 	}
 	else {
 		this->address = a;
