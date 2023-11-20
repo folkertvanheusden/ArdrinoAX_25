@@ -52,7 +52,7 @@ void setup() {
 	// bluetooth needs the wifi stack to be in sleep-mode
 	while(get_wifi_on_line() == false)  // DON'T do if no wifi
 		vTaskDelay(10 / portTICK_PERIOD_MS);
-	targets.push_back(new target_bluetooth(q, d, target_id++, "0000"));
+	targets.push_back(new target_bluetooth(q, d, target_id++, "0000", "PD9FVH"));
 }
 
 void loop() {

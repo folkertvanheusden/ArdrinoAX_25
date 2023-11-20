@@ -11,6 +11,6 @@ protected:
 	void send_message(const target_msg_t & msg) override;
 
 public:
-	target_bluetooth(QueueHandle_t out, Print *const p, const int id, const std::string & pin);
+	target_bluetooth(QueueHandle_t out, Print *const p, const int id, const std::string & pin, const std::string & callsign);
 	virtual ~target_bluetooth();
 };
