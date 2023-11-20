@@ -28,7 +28,7 @@ Using platformio:
 * pio run -t uploadfs
 * pio run -t upload
 
-You may first want to copy "example-configuration.json" to the "data/" folder and adjusting its contents. Especially the callsign is important.
+You may first want to copy "example-configuration.json" to the "data/" folder and adjust its contents. Especially the callsign is important.
 
 
 (C) 2023 by Folkert van Heusden
