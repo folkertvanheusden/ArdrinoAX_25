@@ -6,7 +6,7 @@
 	"lora-pin-nss": 18,
 	"lora-pin-reset": 23,
 	"lora-pin-dio0": 26,
-	"callsign": "PD9FVH",
+	"callsign": "PD1FVH",
 	"callsign-ssid": 0,
 	"with-beacon":true,
 	"beacon-interval-s":300,
