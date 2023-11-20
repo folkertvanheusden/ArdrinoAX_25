@@ -1,3 +1,4 @@
+#pragma once
 #include <optional>
 #include <Print.h>
 
@@ -25,3 +26,5 @@ public:
 
 	void process_nmea();
 };
+
+std::string gps_double_to_aprs(double lat, double lng);

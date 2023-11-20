@@ -1,4 +1,5 @@
 #include "gps.h"
+#include "str.h"
 
 
 #if defined(T_BEAM_V1_2) || defined(T_BEAM_V1_0)
@@ -105,4 +106,23 @@ void gps::process_nmea()
 			}
 		}
 	}
+}
+
+std::string gps_double_to_aprs(double lat, double lng) {
+        double lata = abs(lat);
+        double latd = floor(lata);
+        double latm = (lata - latd) * 60;
+        double lath = (latm - floor(latm)) * 100;
+        double lnga = abs(lng);
+        double lngd = floor(lnga);
+        double lngm = (lnga - lngd) * 60;
+        double lngh = (lngm - floor(lngm)) * 100;
+
+	char buffer[19];
+
+        snprintf(buffer, sizeof buffer, "%02d%02d.%02d%c/%03d%02d.%02d%c",
+                        int(latd), int(floor(latm)), int(floor(lath)), lat > 0 ? 'N' : 'S',
+                        int(lngd), int(floor(lngm)), int(floor(lngh)), lng > 0 ? 'E' : 'W');
+
+	return buffer;
 }
