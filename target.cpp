@@ -14,7 +14,7 @@ target::target(QueueHandle_t out, Print *const p, const int id) : out(out), p(p)
 	BaseType_t xReturned = xTaskCreate(
                     target_task,     /* Function that implements the task. */
                     "target",        /* Text name for the task. */
-                    2048,            /* Stack size in words, not bytes. */
+                    3072,            /* Stack size in words, not bytes. */
                     (void *)this,    /* Parameter passed into the task. */
                     tskIDLE_PRIORITY,/* Priority at which the task is created. */
                     &task);          /* Used to pass out the created task's handle. */
