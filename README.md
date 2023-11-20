@@ -10,7 +10,7 @@ It should be relatively easy to port to other systems.
 
 What it can
 -----------
-It can route from:
+It can route:
 
 * serial TNC (configure your pc serial port at 115200 bps)
 * bluetooth
