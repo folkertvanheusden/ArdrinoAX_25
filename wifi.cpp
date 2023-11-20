@@ -88,11 +88,6 @@ static void wifi_task(void *s) {
 }
 
 bool start_wifi(Print & p) {
-	if (!LittleFS.begin()) {
-		p.println(F("LittleFS.begin failed"));
-		return false;
-	}
-
 	TaskHandle_t xHandle   = nullptr;
 	BaseType_t   xReturned = xTaskCreate(
                     wifi_task,       /* Function that implements the task. */
