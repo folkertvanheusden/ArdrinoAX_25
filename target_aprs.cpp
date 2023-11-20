@@ -5,14 +5,15 @@
 #include "target_aprs.h"
 
 
-target_aprs::target_aprs(QueueHandle_t out, Print *const p, const int id, const std::string & callsign, const char callsign_ssid, gps *const g, const std::string & beacon_text, const unsigned long interval_ms, const std::optional<double> send_every_x_meter) :
+target_aprs::target_aprs(QueueHandle_t out, Print *const p, const int id, const std::string & callsign, const char callsign_ssid, gps *const g, const std::string & beacon_text, const unsigned long interval_ms, const std::optional<double> send_every_x_meter, const bool oe) :
 	target(out, p, id),
 	callsign(callsign),
 	callsign_ssid(callsign_ssid),
 	g(g),
 	beacon_text(beacon_text),
 	interval_ms(interval_ms),
-	send_every_x_meter(send_every_x_meter)
+	send_every_x_meter(send_every_x_meter),
+	send_oe(oe)
 {
 }
 
@@ -46,6 +47,13 @@ std::optional<target_msg_t> target_aprs::wait_for_receive_packet()
 		if (beacon_text.empty() == false)
 			aprs_message += "[" + beacon_text;
 
+		if (send_oe) {
+			std::string packet = "\x3c\xff\x01APLG01>" + callsign + myformat("-%d", callsign_ssid) + ":" + aprs_message;
+
+			return { { id, new std::vector<uint8_t>(packet.data(), packet.data() + packet.size()) } };
+		}
+
+		// if not OE, wrap in a AX.25 beacon message
 		ax25_packet a;
 		a.set_from   (callsign, callsign_ssid, true, false);
 		a.set_to     ("APLG01", 0, false, false);

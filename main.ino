@@ -50,7 +50,7 @@ void setup() {
 	targets.push_back(new target_lora(q, d, target_id++, 18, 23, 26));
 	targets.push_back(new target_beacon(q, d, target_id++, "PD9FVH", 0, "Dit is een test.", 300000l));
 	if (g)
-		targets.push_back(new target_aprs(q, d, target_id++, "PD9FVH", 0, g, "www.vanheusden.com", 200000l, 100));
+		targets.push_back(new target_aprs(q, d, target_id++, "PD9FVH", 0, g, "www.vanheusden.com", 200000l, 100, true));
 	if (with_wifi)
 		targets.push_back(new target_udp(q, d, target_id++, 5001, "192.168.64.206"));
 
