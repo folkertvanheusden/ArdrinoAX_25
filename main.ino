@@ -2,6 +2,7 @@
 
 #include "ax25.h"
 #include "display_u8g2.h"
+#include "gps.h"
 #include "kiss.h"
 #include "target_beacon.h"
 #include "target_bluetooth.h"
@@ -15,6 +16,7 @@ display      *d         = nullptr;
 QueueHandle_t q         = xQueueCreate(4 /* arbitrary */, sizeof(target_msg_t));
 std::vector<target *> targets;
 int           target_id = 0;
+gps          *g         = nullptr;
 
 int espressif_log(const char *fmt, va_list args) {
 	int   len    = vsnprintf(nullptr, 0, fmt, args);
@@ -36,6 +38,8 @@ void setup() {
 	d->println("Hello!");
 
 	esp_log_set_vprintf(espressif_log);
+
+	g = new gps(d);
 
 	if (!start_wifi(*d))
 		d->println(F("WiFi failed"));

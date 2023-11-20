@@ -47,7 +47,6 @@ display::~display()
 
 size_t display::write(uint8_t c)
 {
-Serial.print(char(c));  // TODO
 	if (xSemaphoreTake(semaphore, portMAX_DELAY) == pdTRUE) {
 		if (c == 13)
 			x = 0;
