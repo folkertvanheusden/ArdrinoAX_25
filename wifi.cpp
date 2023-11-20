@@ -62,13 +62,12 @@ static void wifi_task(void *s) {
 			vTaskDelay(100 / portTICK_PERIOD_MS);
 		}
 
-		WiFi.setSleep(false);
-
 		while(check_wifi_connection_status() == CS_CONNECTED) {
 			if (xSemaphoreTake(on_line_semaphore, portMAX_DELAY) == pdTRUE) {
 				if (on_line_state == false) {
 					p->println(F("WiFi connected"));
 					on_line_state = true;
+					WiFi.setSleep(true);
 				}
 
 				xSemaphoreGive(on_line_semaphore);

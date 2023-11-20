@@ -5,11 +5,16 @@
 
 BluetoothSerial SerialBT;
 
-target_bluetooth::target_bluetooth(QueueHandle_t out, Print *const p, const int id) :
+target_bluetooth::target_bluetooth(QueueHandle_t out, Print *const p, const int id, const std::string & pin) :
 	target(out, p, id)
 {
+	SerialBT.setPin(pin.c_str());
+	SerialBT.enableSSP();
+
 	has_device = SerialBT.begin("ArdrinoAX.25");
-	if (!has_device)
+	if (has_device)
+		p->println(F("BT enabled"));
+	else
 		p->println(F("BT device missing"));
 }
 

@@ -4,6 +4,7 @@
 #include "display_u8g2.h"
 #include "kiss.h"
 #include "target_beacon.h"
+#include "target_bluetooth.h"
 #include "target_lora.h"
 #include "target_serial.h"
 #include "target_udp.h"
@@ -29,6 +30,8 @@ int espressif_log(const char *fmt, va_list args) {
 void setup() {
 	Serial.begin(115200);
 
+	pinMode(LED_BUILTIN, OUTPUT);
+
 	d = create_lilygo_display();
 	d->println("Hello!");
 
@@ -39,13 +42,20 @@ void setup() {
 
 	targets.push_back(new target_serial(q, d, target_id++));
 	targets.push_back(new target_lora(q, d, target_id++, 18, 23, 26));
-	targets.push_back(new target_beacon(q, d, target_id++, "PD9FVH", 0, "Dit is een test.", 30000));
+	targets.push_back(new target_beacon(q, d, target_id++, "PD9FVH", 0, "Dit is een test.", 300000l));
 	targets.push_back(new target_udp(q, d, target_id++, 5001, "192.168.64.206"));
+
+	// bluetooth needs the wifi stack to be in sleep-mode
+	while(get_wifi_on_line() == false)  // DON'T do if no wifi
+		vTaskDelay(10 / portTICK_PERIOD_MS);
+	targets.push_back(new target_bluetooth(q, d, target_id++, "0000"));
 }
 
 void loop() {
+	digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+
 	target_msg_t msg;
-	if (xQueueReceive(q, &msg, portMAX_DELAY) == pdTRUE) {
+	if (xQueueReceive(q, &msg, 200 / portTICK_PERIOD_MS) == pdTRUE) {
 		ax25_packet *a25 = nullptr;
 
 		auto unwrapped = unwrap_kiss(*msg.data);

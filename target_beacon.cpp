@@ -5,7 +5,7 @@
 #include "target_beacon.h"
 
 
-target_beacon::target_beacon(QueueHandle_t out, Print *const p, const int id, const std::string & callsign, const char callsign_ssid, const std::string & beacon_text, const int interval_ms) :
+target_beacon::target_beacon(QueueHandle_t out, Print *const p, const int id, const std::string & callsign, const char callsign_ssid, const std::string & beacon_text, const unsigned long interval_ms) :
 	target(out, p, id),
 	callsign(callsign),
 	callsign_ssid(callsign_ssid),
