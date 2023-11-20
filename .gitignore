@@ -1,1 +1,3 @@
 .pio
+data/configuration.json
+version.cpp

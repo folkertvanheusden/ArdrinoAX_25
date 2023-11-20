@@ -16,26 +16,13 @@
 #include "version.h"
 #include "wifi.h"
 
+
 constexpr char cfg_file[] = "/configuration.json";
 display      *d         = nullptr;
 QueueHandle_t q         = xQueueCreate(4 /* arbitrary */, sizeof(target_msg_t));
 std::vector<target *> targets;
 int           target_id = 0;
 gps          *g         = nullptr;
-
-struct SpiRamAllocator {
-	void *allocate(size_t size) {
-		return heap_caps_malloc(size, MALLOC_CAP_SPIRAM);
-	}
-
-	void deallocate(void *pointer) {
-		heap_caps_free(pointer);
-	}
-
-	void* reallocate(void *ptr, size_t new_size) {
-		return heap_caps_realloc(ptr, new_size, MALLOC_CAP_SPIRAM);
-	}
-};
 
 int espressif_log(const char *fmt, va_list args) {
 	int   len    = vsnprintf(nullptr, 0, fmt, args);
@@ -59,12 +46,17 @@ void setup() {
 
 	esp_log_set_vprintf(espressif_log);
 
-	BasicJsonDocument<SpiRamAllocator> doc(4096);
+	DynamicJsonDocument doc(4096);
         if (LittleFS.begin()) {
 		File cfg_file_h = LittleFS.open(cfg_file, "r");
 		if (cfg_file_h) {
-			deserializeJson(doc, cfg_file_h);
+			auto rc = deserializeJson(doc, cfg_file_h);
 			cfg_file_h.close();
+
+			if (rc.code() == DeserializationError::Ok)
+				d->println(F("Configuration loaded"));
+			else
+				d->printf("Configuration ERROR: %d", int(rc.code()));
 		}
 		else {
 			d->println(F("No configuration file!"));
