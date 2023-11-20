@@ -80,27 +80,23 @@ void gps::process_nmea()
 			continue;
 		}
 
-		if (gps_processor.encode(Serial.read())) {
+		if (gps_processor.encode(SerialGPS.read())) {
 			if (xSemaphoreTake(semaphore, portMAX_DELAY) == pdTRUE) {
-				if (gps_processor.location.isUpdated()) {
-					lat = gps_processor.location.lat();
-					lng = gps_processor.location.lng();
+				if (gps_processor.location.isValid()) {
+					if (gps_processor.location.isUpdated()) {
+						lat = gps_processor.location.lat();
+						lng = gps_processor.location.lng();
+					}
+
+					if (gps_processor.speed.isUpdated())
+						spd = gps_processor.speed.kmph();
+
+					if (!is_valid) {
+						is_valid = true;
+						p->println(F("Have GPS fix"));
+					}
 				}
-
-				if (gps_processor.speed.isUpdated())
-					spd = gps_processor.speed.kmph();
-
-				if (!is_valid) {
-					is_valid = true;
-					p->println(F("Have GPS fix"));
-				}
-
-				xSemaphoreGive(semaphore);
-			}
-		}
-		else {
-			if (xSemaphoreTake(semaphore, portMAX_DELAY) == pdTRUE) {
-				if (is_valid) {
+				else if (is_valid) {
 					is_valid = false;
 					p->println(F("No GPS fix"));
 				}
