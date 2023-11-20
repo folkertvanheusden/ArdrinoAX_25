@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "kiss.h"
 #include "target_serial.h"
 

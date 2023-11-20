@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "ax25.h"
 #include "kiss.h"
 #include "target_beacon.h"

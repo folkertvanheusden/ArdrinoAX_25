@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "kiss.h"
 
 
@@ -73,7 +75,7 @@ std::optional<std::vector<uint8_t> > unwrap_kiss(const std::vector<uint8_t> & in
 	return { std::move(out) };
 }
 
-std::vector<uint8_t> wait_for_kiss(HardwareSerial & s)
+std::vector<uint8_t> wait_for_kiss(Stream & s)
 {
 	std::vector<uint8_t> out;
 
