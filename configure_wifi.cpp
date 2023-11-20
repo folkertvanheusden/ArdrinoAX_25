@@ -9,7 +9,7 @@
 #include "start_wifi.h"
 
 
-static const std::string name = "M.A.X.X - by vanheusden.com";
+static const std::string name = "ArdrinoAX.25 - by vanheusden.com";
 
 
 configure_wifi::configure_wifi()
